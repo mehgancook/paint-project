@@ -1,0 +1,25 @@
+package shapes;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+
+/**
+ * 
+ */
+
+/**
+ * @author mehga_000
+ *
+ */
+public class Line extends AbstractShapes {
+    public Line() {
+        super("Line", new ImageIcon("line_bw.gif"), new ImageIcon("line.gif"));
+    }
+    public void actionPerformed(final ActionEvent theEvent) {
+        
+    }
+
+}
+
+

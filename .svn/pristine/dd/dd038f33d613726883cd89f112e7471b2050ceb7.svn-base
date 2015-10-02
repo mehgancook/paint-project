@@ -1,0 +1,32 @@
+package shapes;
+
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+
+
+public abstract class AbstractShapes extends AbstractAction implements Shapes {
+    
+    /** Name of shape. */
+    private String myName;
+    
+    /** Icon of shape when inactive. */
+    public static ImageIcon myImageIconBW;
+    
+    /** Icon of shape when active.*/
+    private ImageIcon myImageIcon;
+    
+    
+    protected AbstractShapes(String theName, ImageIcon theImageBW, ImageIcon theImage) {
+        myName = theName;
+        myImageIconBW = theImageBW;
+        myImageIcon = theImage;    
+    }
+    
+    public static ImageIcon getImage() {
+        return myImageIconBW;
+    }
+    
+    public String toString() {
+        return myName;
+    }
+}

@@ -1,0 +1,276 @@
+/**
+ * 
+ */
+package gui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSlider;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.MouseInputAdapter;
+
+import shapes.Ellipse;
+import shapes.Line;
+import shapes.Pencil;
+import shapes.Rectangle;
+import shapes.Shapes;
+
+/**
+ * @author mehga_000
+ *
+ */
+public class PowerPaintGUI extends JFrame  {
+    /**
+     * The window title.
+     */
+    private static final String TITLE = "TCSS 305 PowerPaint";
+    
+    /** The panel used inside the frame. */
+    private final JPanel myPanel;
+    
+    /**
+     * The slider for thickness.
+     */
+    private JSlider mySlider;
+    
+    /** An array of shapes. */
+    private final List<Shapes> myShapes;
+    
+    /** An array of ints for mnumoics. */
+    private final List<Integer> myInts;
+    
+    /**
+     * The initial frames per second at which the simulation will run.
+     */
+    private static final int INITIAL_THICKNESS = 1;
+
+    /**
+     * The maximum frames per second at which the simulation will run.
+     */
+    private static final int MAX_THICKNESS = 20;
+    
+    /**
+     * The minor tick spacing for the FPS slider.
+     */
+    private static final int MINOR_TICK_SPACING = 1;
+
+    /**
+     * The major tick spacing for the FPS slider.
+     */
+    private static final int MAJOR_TICK_SPACING = 5;
+    
+    private int x1,x2,y1,y2;
+    
+    
+    public PowerPaintGUI() {
+        super(TITLE);
+        myShapes = new ArrayList<>();
+        myShapes.add(new Pencil());
+        myShapes.add(new Line());
+        myShapes.add(new Rectangle());
+        myShapes.add(new Ellipse());
+        myInts = new ArrayList<>();
+        myInts.add(KeyEvent.VK_P);
+        myInts.add(KeyEvent.VK_L);
+        myInts.add(KeyEvent.VK_R);
+        myInts.add(KeyEvent.VK_E);
+        setToolBar();
+        setJMenuBar(createMenuBar(myShapes));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myPanel = new DrawingPanel();
+        add(myPanel, BorderLayout.CENTER);
+        Image img = new ImageIcon("./images/w.gif").getImage();
+        setIconImage(img);
+        pack();
+        setLocationRelativeTo(null);  
+        setVisible(true);
+    }
+    
+    public void setToolBar() {
+        final JToolBar toolBar1 = createToolBar(myShapes);
+        add(toolBar1, BorderLayout.SOUTH);
+        
+    }
+    
+    private JToolBar createToolBar(List<Shapes> theShapes) {
+        final JToolBar bar = new JToolBar();
+        final ButtonGroup btngrp = new ButtonGroup();
+        int i = 0;
+        for (final Shapes shape: theShapes) {
+            String iconName = shape.toString().toLowerCase();
+            final JToggleButton tb = new JToggleButton(shape.toString(), 
+                                     new ImageIcon("./images/" + iconName + "_bw.gif"));
+            tb.setMnemonic(myInts.get(i));
+            i++;
+            btngrp.add(tb);
+            bar.add(tb);
+        }
+
+        return bar;
+    }
+    
+    
+    public JMenuBar createMenuBar(List<Shapes> theShapes) {
+        final JMenuBar menuBar = new JMenuBar();
+        final JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        final JMenuItem undoItem = new JMenuItem("Undo all changes", KeyEvent.VK_U);
+        undoItem.setEnabled(false);
+        fileMenu.add(undoItem);
+        fileMenu.addSeparator();
+        final JMenuItem exitItem = new JMenuItem("Exit", KeyEvent.VK_X);
+        fileMenu.add(exitItem);
+        menuBar.add(fileMenu);
+        final JMenu optionMenu = new JMenu("Options");
+        optionMenu.setMnemonic(KeyEvent.VK_O);
+        final JCheckBox gridBox = new JCheckBox("Grid");
+        gridBox.setMnemonic(KeyEvent.VK_G);
+        optionMenu.add(gridBox);
+        optionMenu.addSeparator();
+        final JMenu thicknessItem = new JMenu("Thickness");
+        thicknessItem.setMnemonic(KeyEvent.VK_T);
+        mySlider = new JSlider(SwingConstants.HORIZONTAL, 0, MAX_THICKNESS,
+                               INITIAL_THICKNESS);
+        mySlider.setMajorTickSpacing(MAJOR_TICK_SPACING);
+        mySlider.setMinorTickSpacing(MINOR_TICK_SPACING);
+        mySlider.setPaintLabels(true);
+        mySlider.setPaintTicks(true);
+//        mySlider.addChangeListener(new ChangeListener() {
+//            public void stateChanged(final ChangeEvent theEvent) {
+//                final int value = mySlider.getValue();
+//                if (value > 0) {
+//                    myDelay = MY_DELAY_NUMERATOR / value;
+//                    myTimer.setDelay(myDelay);
+//                }
+//            }
+//        });
+        thicknessItem.add(mySlider);
+        optionMenu.add(thicknessItem);
+        menuBar.add(optionMenu);
+        final JMenu toolMenu = new JMenu("Tools");
+        toolMenu.setMnemonic(KeyEvent.VK_T);
+        final ButtonGroup btngrp = new ButtonGroup();
+        int i = 0;
+        for (final Shapes shape: theShapes) {
+            String iconName = shape.toString().toLowerCase();
+            final JRadioButtonMenuItem btn = new JRadioButtonMenuItem(shape.toString(), 
+                          new ImageIcon("C:/305/mehganc-powerpaint/images/" + iconName + "_bw.gif"));
+            btn.setMnemonic(myInts.get(i));
+            i++;
+            btngrp.add(btn);
+            toolMenu.add(btn);
+        }
+        menuBar.add(toolMenu);
+        final JMenu helpMenu = new JMenu("Help");
+        helpMenu.setMnemonic(KeyEvent.VK_H);
+        final JMenuItem aboutItem = new JMenuItem("About...", KeyEvent.VK_A);
+        helpMenu.add(aboutItem);
+        menuBar.add(helpMenu);
+        final JMenu color = new JMenu("Color...");
+        color.setMnemonic(KeyEvent.VK_C);
+        menuBar.add(color);
+        return menuBar;
+    }
+    
+//    private void drawingPanel() {
+//        myPanel.setPreferredSize(new Dimension(400, 200));
+//        myPanel.setBackground(Color.WHITE);
+//        final class MyMouseMotionAdapter extends MouseMotionAdapter {
+//            public void mousePressed(final MouseEvent theEvent) {
+//                x1 = theEvent.getX();
+//                y1 = theEvent.getY();
+//                repaint();
+//            }
+//            public void mouseReleased(final MouseEvent theEvent) {
+//                x2 = theEvent.getX();
+//                y2 = theEvent.getY();
+//                repaint();
+//            }
+//            
+//        }  
+//        myPanel.addMouseMotionListener(new MyMouseMotionAdapter());
+////        final class DrawingPanel extends JPanel {
+////            @Override
+////            public void paintComponent(final Graphics theGraphics) {
+////             super.paintComponent(theGraphics);
+////             final Graphics2D g2d = (Graphics2D) theGraphics;
+////               theGraphics.drawLine(x1,y1, x2, y2);
+////             }
+////        }
+////        myPanel.addMouseMotionListener(new MyMouseMotionAdapter());
+//        add(myPanel, BorderLayout.CENTER);
+//        
+//        
+//        
+//    }
+    
+    final class DrawingPanel extends JPanel {
+        public DrawingPanel() {
+            super();
+            setBackground(Color.WHITE);
+            setPreferredSize(new Dimension(400, 200));        
+            addMouseListener(new MyMouseListener());
+            addMouseMotionListener(new MyMouseInputListener());
+            setVisible(true);
+        }
+        private class MyMouseListener extends MouseAdapter {
+            public void mousePressed(final MouseEvent theEvent) {
+                x1 = theEvent.getX();
+                y1 = theEvent.getY();
+                repaint();
+            }  
+        }
+        private class MyMouseInputListener extends MouseInputAdapter {
+            public void mouseMoved(MouseEvent theEvent) {
+                x2 = theEvent.getX();
+                y2 = theEvent.getY();
+            }
+            public void mouseDragged(final MouseEvent theEvent) {
+                x2 = theEvent.getX();
+                y2 = theEvent.getY();
+                repaint();             
+            }
+        }  
+
+        @Override
+        public void paintComponent(final Graphics theGraphics) {
+         super.paintComponent(theGraphics);
+         final Graphics2D g2d = (Graphics2D) theGraphics;
+           g2d.drawLine(x1, y1, x2, y2);
+         }
+    }
+        
+        
+        
+        
+    }
+
+

@@ -1,0 +1,53 @@
+
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+/*
+ * Assignment 5
+ * Winter15
+ * TCSS305
+ */
+
+/**
+ * @author mehga_000
+ *
+ */
+@SuppressWarnings("serial")
+public class EllipseAction extends AbstractAction {
+    /** The JPanel to associate with this Action. */
+    private final DrawingPanel myPanel;
+
+    /**
+     * Construct this Action.
+     * 
+     * @param thePanel a JPanel to associate with this Action.
+     */
+    public EllipseAction(final DrawingPanel thePanel) {
+        super("Ellipse");
+        myPanel = thePanel;
+        putValue(Action.MNEMONIC_KEY, KeyEvent.VK_E);
+        putValue(Action.SELECTED_KEY, true);
+    }
+    @Override
+    public void actionPerformed(final ActionEvent theEvent) {
+    //    myPanel.setText((String) getValue(Action.NAME));
+      //  myPanel.repaint();
+    }
+
+}
+
+
+
+
+
+
+
+   
+
+
+
+

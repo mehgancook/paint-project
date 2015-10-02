@@ -1,0 +1,23 @@
+/*
+ * Assignment 5
+ * Winter15
+ * TCSS305
+ */
+
+import java.awt.Point;
+import java.awt.Shape;
+
+/**
+ * The Interface for Tools. 
+ * @author Mehgan Cook
+ * @version 02/23/2015
+ */
+public interface Tool {
+    
+   /**getShape returns allow access to the current shape that is being used by a tool.
+    * @param theStartPoint is the mouse Start Point
+    * @param theEndPoint is the mouse End Point
+    * @return a shape of the tool.
+    * */
+    Shape getShape(Point theStartPoint, Point theEndPoint);
+}

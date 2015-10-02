@@ -1,0 +1,29 @@
+package shapes;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+
+/**
+ * 
+ */
+
+/**
+ * @author mehga_000
+ *
+ */
+public class Pencil extends AbstractShapes {
+    
+    public static int Mnumonic = KeyEvent.VK_P;
+    
+    public Pencil() {
+        super("Pencil", new ImageIcon("pencil_bw.gif"), new ImageIcon("pencil.gif"));
+    }
+    public void actionPerformed(final ActionEvent theEvent) {
+        
+    }
+
+}
+
+

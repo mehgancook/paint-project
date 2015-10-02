@@ -1,0 +1,30 @@
+
+/*
+ * Assignment 5
+ * Winter15
+ * TCSS305
+ */
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
+
+/**
+ * The Pencil Tool used to draw pencil shapes.
+ * @author Mehgan Cook
+ * @version 02/23/2015
+ */
+public class PencilTool implements Tool {
+    /** 
+     * creates a Path2D shape and returns it with start and stop positions.
+     * @param theStartPoint is the starting point.
+     * @param theEndPoint is the ending point.
+     * @return a pencil shape.
+     * */
+    public Shape getShape(final Point theStartPoint, final Point theEndPoint) {
+        final GeneralPath pencil = new GeneralPath();
+        pencil.moveTo(theStartPoint.x, theStartPoint.y);
+        pencil.lineTo(theEndPoint.x, theEndPoint.y);
+        return pencil;
+    }
+
+}

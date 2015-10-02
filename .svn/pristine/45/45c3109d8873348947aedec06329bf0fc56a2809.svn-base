@@ -1,0 +1,178 @@
+/*
+ * TCSS 305 example code
+ */
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+
+/**
+ * The JMenuBar for this GUI example.
+ * 
+ * @author Alan Fowler
+ * @version Winter 2015
+ */
+@SuppressWarnings("serial")
+public class MenuBar extends JMenuBar implements PropertyChangeListener {
+    
+    /** The File menu. */
+    private final JMenu myFileMenu;
+    
+    /**The Options menu. */
+    private final JMenu myOptionsMenu;
+    
+    /**The Tools menu. */
+    private final JMenu myToolsMenu;
+    
+    /**The Help menu. */
+    private final JMenu myHelpMenu;
+    
+    /**The Color Menu. */
+    
+    private final JMenu myColorMenu;
+    
+    /** A button to clear the drawing panel. */
+    private final JMenuItem myUndoAllChanges;
+    
+    /** A button group for radio buttons. */
+    private final ButtonGroup myGroup;
+    
+    /** Slider size. */
+    private int mySliderSize;
+       
+    /**
+     * Construct the menu bar.
+     * 
+     * @param theFrame the JFrame which will contain this JMenuBar
+     */
+    public MenuBar(final JFrame theFrame) {
+        super();        
+        myFileMenu = new JMenu("File");
+        myOptionsMenu = new JMenu("Options");
+        myToolsMenu = new JMenu("Tools");
+        myHelpMenu = new JMenu("Help");
+        myColorMenu = new JMenu("Color...");
+        
+        myGroup = new ButtonGroup();
+        myUndoAllChanges = new JMenuItem("Undo all changes", KeyEvent.VK_U);
+        
+        setup(theFrame);
+    }
+    /**
+     * Sets up the components of the menu.
+     * 
+     * @param theFrame the JFrame containing this menu.
+     */
+    private void setup(final JFrame theFrame) {
+        myFileMenu.setMnemonic(KeyEvent.VK_F);
+        myOptionsMenu.setMnemonic(KeyEvent.VK_O);
+        myToolsMenu.setMnemonic(KeyEvent.VK_T);
+        myHelpMenu.setMnemonic(KeyEvent.VK_H);
+        myColorMenu.setMnemonic(KeyEvent.VK_C);
+        myFileMenu.add(myUndoAllChanges);
+        myFileMenu.addSeparator();
+        final JMenuItem exit = new JMenuItem("Exit", KeyEvent.VK_E);
+        exit.addActionListener(new ActionListener() {
+            public void actionPerformed(final ActionEvent theEvent) {
+                theFrame.dispatchEvent(new WindowEvent(theFrame,
+                                                       WindowEvent.WINDOW_CLOSING));
+            }
+        });
+        myFileMenu.add(exit);
+        add(myFileMenu);
+        
+        
+        final JCheckBoxMenuItem grid = new JCheckBoxMenuItem("Grid");
+        grid.setMnemonic(KeyEvent.VK_G);
+        grid.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(final ItemEvent theEvent) {
+            }
+        });
+ 
+        myOptionsMenu.add(grid);
+        myOptionsMenu.addSeparator();
+        
+        final JMenu thickness = new JMenu("Thickness");
+        thickness.setMnemonic(KeyEvent.VK_T);
+        final Slider thicknessSlider = new Slider();
+        mySliderSize = thicknessSlider.getSliderSize();
+        thickness.add(thicknessSlider);
+        myOptionsMenu.add(thickness);    
+        add(myOptionsMenu);
+        
+        final JMenuItem about = new JMenuItem("About...", KeyEvent.VK_A);
+        about.addActionListener(new ActionListener() {  
+            public void actionPerformed(final ActionEvent theEvent) {
+                JOptionPane.showMessageDialog(theFrame, "TCSS 305 PowerPaint, Winter 2015");
+            }
+        });
+        myHelpMenu.add(about);
+        add(myHelpMenu);
+        
+        myColorMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(final ActionEvent theEvent) {
+                Color result = null;
+                do {
+                    result = JColorChooser.showDialog(null, "A Color Chooser", null);
+                    System.out.println("Color chosen: " + result);
+                } while (result != null);
+            }
+        });
+        add(myColorMenu);
+    }
+    
+    /**
+     * Creates a radio button menu item, associates an action with the button,
+     * adds the button to a button group, adds the button to the View menu.
+     * 
+     * @param theAction the Action to associate with the new button being created
+     */
+    public void createMenuButton(final Action theAction) {
+        final JRadioButtonMenuItem createdButton = new JRadioButtonMenuItem(theAction);
+
+        myGroup.add(createdButton);
+        myToolsMenu.add(createdButton);
+        add(myToolsMenu);
+    }
+    
+    // Here is the handler for property change events
+ 
+    @Override
+    public void propertyChange(final PropertyChangeEvent theEvent) {
+        if ("text".equals(theEvent.getPropertyName())) {
+            
+            // OK, let's enable the quit button based on the state of the panel's text
+            myUndoAllChanges.setEnabled("Goodbye".equals(theEvent.getNewValue()));
+        }
+    }
+
+}
+
+        
+    
+    
+
+
+
+
+

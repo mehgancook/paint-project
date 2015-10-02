@@ -1,0 +1,100 @@
+/*
+ * Assignment 5
+ * Winter15
+ * TCSS305
+ */
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+
+/**
+ * PowerPaint GUI gets the GUI setup.
+ * @author Mehgan Cook
+ * @version 02/17/2015
+ */
+public class PowerPaintGUI {
+
+    /**panel that shapes will be drawn on. */
+    private DrawingPanel myPanel;
+
+    /**Map with action and image to be associated with a button. */
+    private final Map<Action, Image> myButtonInformation;
+    /**
+     * Constructor for powerPaintGUI.
+     */
+    public PowerPaintGUI() {
+        myButtonInformation = new LinkedHashMap<>();
+        setup();
+    }
+    /**
+     * Setup sets up the menu bar, tool bar, and drawing panel for the GUI frame.
+     */
+    private void setup() {
+        final JFrame guiFrame = new JFrame("TCSS 305 PowerPaint");
+        final Image img = new ImageIcon("./images/w.gif").getImage();
+        guiFrame.setIconImage(img);
+
+       // final MenuBar menuBar = new MenuBar(guiFrame);
+        final ToolBar toolBar = new ToolBar();
+        myPanel = new DrawingPanel();
+        final MenuBar menuBar = new MenuBar(guiFrame, myPanel);
+        final MouseAdapter mouseAdapter = new PowerPaintGUIMouseAdapter();
+        myPanel.addMouseListener(mouseAdapter);
+        myPanel.addMouseMotionListener(mouseAdapter);
+
+        // register the menu as a listener for property changes from the panel
+        myPanel.addPropertyChangeListener(menuBar);
+        myButtonInformation.put(new PencilAction(myPanel), 
+                                new PencilAction(myPanel).getImage());
+        myButtonInformation.put(new LineAction(myPanel), 
+                                new LineAction(myPanel).getImage());
+        myButtonInformation.put(new RectangleAction(myPanel), 
+                                new RectangleAction(myPanel).getImage());
+        myButtonInformation.put(new EllipseAction(myPanel), 
+                                new EllipseAction(myPanel).getImage());
+
+        for (final Action action : myButtonInformation.keySet()) {
+            final Image iconImage = myButtonInformation.get(action);
+            menuBar.createMenuButton(action, iconImage);
+            toolBar.createToolBarButton(action, iconImage);
+        }
+
+        guiFrame.setJMenuBar(menuBar);
+
+        guiFrame.add(toolBar, BorderLayout.SOUTH);
+        guiFrame.add(myPanel, BorderLayout.CENTER);
+        guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        guiFrame.pack();
+
+        guiFrame.setLocationRelativeTo(null);
+        guiFrame.setVisible(true);
+    }  
+    /**
+     * PowerPaintGUIMouseAdapter is an inner class that sets up mouse Events.
+     * @author Mehgan Cook
+     * @version 02/17/2015
+     */
+    public class PowerPaintGUIMouseAdapter extends MouseAdapter {
+        /** {@inheritDoc} */
+        @Override
+        public void mousePressed(final MouseEvent theEvent) {
+            myPanel.recordStartPoint(theEvent.getPoint());
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void mouseDragged(final MouseEvent theEvent) {
+            myPanel.recordDragPoint(theEvent.getPoint());
+            myPanel.repaint();
+        }
+    }
+}
+

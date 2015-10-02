@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package shapes;
+
+/**
+ * @author mehga_000
+ *
+ */
+public interface Shapes {
+
+}

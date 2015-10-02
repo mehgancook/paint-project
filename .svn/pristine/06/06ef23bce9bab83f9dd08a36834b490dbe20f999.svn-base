@@ -1,0 +1,75 @@
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+
+/*
+ * Assignment 5
+ * Winter15
+ * TCSS305
+ */
+
+/**
+ * @author Mehgan Cook
+ * @version 02/17/2015
+ */
+public class PowerPaintGUI implements PropertyChangeListener {
+    /**
+     * 
+     */
+    public PowerPaintGUI() {
+        setup();
+    }
+    /**
+     * 
+     */
+    private void setup() {
+        final JFrame guiFrame = new JFrame("TCSS 305 PowerPaint");
+        final Image img = new ImageIcon("./images/w.gif").getImage();
+        guiFrame.setIconImage(img);
+        
+        final MenuBar menuBar = new MenuBar(guiFrame);
+        final ToolBar toolBar = new ToolBar();
+        final DrawingPanel panel = new DrawingPanel();
+        
+     // register the menu as a listener for property changes from the panel
+        panel.addPropertyChangeListener(menuBar);
+        
+        final Action[] actions = {new PencilAction(panel), new LineAction(panel),
+                                  new RectangleAction(panel), new EllipseAction(panel)};
+        
+        for (final Action action : actions) {
+            menuBar.createMenuButton(action);
+            toolBar.createToolBarButton(action);
+        }
+        
+        guiFrame.setJMenuBar(menuBar);
+
+        guiFrame.add(toolBar, BorderLayout.SOUTH);
+        guiFrame.add(panel, BorderLayout.CENTER);
+        guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        guiFrame.pack();
+        
+        /** A ToolKit. */
+        final Toolkit kit = Toolkit.getDefaultToolkit();
+        
+        guiFrame.setLocation(
+            (int) (kit.getScreenSize().getWidth() / 2 - guiFrame.getWidth() / 2),
+            (int) (kit.getScreenSize().getHeight() / 2 - guiFrame.getHeight() / 2));
+        
+        guiFrame.setVisible(true);
+    }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        // TODO Auto-generated method stub
+        
+    }
+
+}
+        

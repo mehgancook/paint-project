@@ -1,0 +1,59 @@
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+
+@SuppressWarnings("serial")
+public class Slider extends JSlider {
+    
+    /**
+     * The initial frames per second at which the simulation will run.
+     */
+    private static final int INITIAL_THICKNESS = 1;
+
+    /**
+     * The maximum frames per second at which the simulation will run.
+     */
+    private static final int MAX_THICKNESS = 20;
+    
+    /**
+     * The minor tick spacing for the FPS slider.
+     */
+    private static final int MINOR_TICK_SPACING = 1;
+
+    /**
+     * The major tick spacing for the FPS slider.
+     */
+    private static final int MAJOR_TICK_SPACING = 5;
+    
+    private final JSlider mySlider;
+    
+    
+    /** Slider size. */
+    private int mySliderSize;
+    
+    public Slider() {
+        super();
+        mySlider = new JSlider(SwingConstants.HORIZONTAL, 0, MAX_THICKNESS,
+                               INITIAL_THICKNESS);
+    }
+    public void setup() {
+        
+        mySlider.setMajorTickSpacing(MAJOR_TICK_SPACING);
+        mySlider.setMinorTickSpacing(MINOR_TICK_SPACING);
+        mySlider.setPaintLabels(true);
+        mySlider.setPaintTicks(true);
+        mySlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(final ChangeEvent theEvent) {
+                mySliderSize = mySlider.getValue();
+            }
+        });
+    }
+    
+    public int getSliderSize() {
+        return mySliderSize;
+    }
+}
+    
+

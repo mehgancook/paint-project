@@ -1,0 +1,26 @@
+package shapes;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+
+/**
+ * 
+ */
+
+/**
+ * @author mehga_000
+ *
+ */
+public class Ellipse extends AbstractShapes {
+    
+    public Ellipse() {
+        super("Ellipse", new ImageIcon("ellipse_bw.gif"), new ImageIcon("ellipse.gif"));
+    }
+    public void actionPerformed(final ActionEvent theEvent) {
+        
+    }
+
+}
+
+

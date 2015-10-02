@@ -1,0 +1,160 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+
+
+/**
+ * The JPanel upon which the text will be painted.
+ * 
+ * @author Alan Fowler
+ * @version Winter 2015
+ */
+@SuppressWarnings("serial")
+public class DrawingPanel extends JPanel {
+    
+    /** The default size for this JPanel. */
+    private static final Dimension DEFUALT_SIZE = new Dimension(400, 200);
+    
+    /** An object to represent that no point is assigned. */
+    private static final Point NO_POINT = null;
+    
+    /** A flag to indicate True if pencil is in use. */
+    private boolean myPencilIsSelected;
+    
+    /** A flag to indicate True if line is in use. */
+    private boolean myLineIsSelected;
+    
+    /** A flag to indicate True if rectangle is in use. */
+    private boolean myRectangleIsSelected;
+    
+    /** A flag to indicate True if ellipse is in use. */
+    private boolean myEllipseIsSelected;
+    
+    /** The start point for the Shape. */
+    private Point myStartPoint;
+    
+    /** The end point for the Shape. */
+    private Point myEndPoint;
+    
+    /**Stores thickness.*/
+    private int myThickness;
+    
+    /** A collection of Points; each represents the center of a Circle. */
+    private final List<Shape> myShapes;
+    
+    public DrawingPanel() {
+        super();
+        setPreferredSize(DEFUALT_SIZE);
+        setBackground(Color.WHITE);
+        myPencilIsSelected = true;
+        myLineIsSelected = false;
+        myRectangleIsSelected = false;
+        myEllipseIsSelected = false;
+        myShapes = new ArrayList<Shape>();
+    }
+}
+    
+//    public void recordStartPoint(final Point thePoint) {
+//        my.add(myStartPoint);
+//        myLines.add(myEndPoint);
+//        
+//    
+//    /** {@inheritDoc} */
+//    @Override
+//    public void paintComponent(final Graphics theGraphics) {
+//        super.paintComponent(theGraphics);
+//        final Graphics2D g2d = (Graphics2D) theGraphics;
+//
+//    }
+//
+//}
+//
+//
+//
+//    /**
+//     * Records the start point for a shape.
+//     * 
+//     * @param thePoint the start point of a shape.
+//     */
+//    public void recordStartPoint(final Point thePoint) {
+//        if (myCirclesIsSelected) {
+//            // make a defensive copy of the_point
+//            myCircles.add((Point) thePoint.clone());
+//            repaint();
+//        } else { // a line
+//            if (myEndPoint != null) { // starting a new line, so record the previous line
+//                myLines.add(myStartPoint);
+//                myLines.add(myEndPoint);
+//            }
+//            myStartPoint = thePoint;
+//            myEndPoint = NO_POINT; // still need to capture the end point
+//        }
+//    }
+//
+//    /**
+//     * Records the current position of the mouse during a drag.
+//     * 
+//     * @param thePoint the end point of the shape
+//     */
+//    public void recordDragPoint(final Point thePoint) {
+//        if (!myCirclesIsSelected) {
+//            // make a defensive copy of the_point
+//            myEndPoint = (Point) thePoint.clone();
+//            repaint();
+//        }
+//    }
+//
+//    /**
+//     * Signals the panel to draw Circles (instead of Lines).
+//     */
+//    public void drawCircles() {
+//        myCirclesIsSelected = true;
+//    }
+//
+//    /**
+//     * Signals the panel to draw Lines (instead of Circles).
+//     */
+//    public void drawLines() {
+//        myCirclesIsSelected = false;
+//    }
+//
+//    /** {@inheritDoc} */
+//    @Override
+//    public void paintComponent(final Graphics theGraphics) {
+//        super.paintComponent(theGraphics);
+//        final Graphics2D g2 = (Graphics2D) theGraphics;
+//
+//        // draw circles
+//        g2.setColor(Color.RED);
+//        for (final Point p : myCircles) {
+//            g2.fillOval(p.x - CIRCLE_RADIUS, p.y - CIRCLE_RADIUS,
+//                        CIRCLE_RADIUS * 2, CIRCLE_RADIUS * 2);
+//        }
+//
+//        // draw lines
+//        g2.setColor(Color.BLUE);
+//        for (int i = 0; i < myLines.size(); i += 2) {
+//            final Point p1 = myLines.get(i);
+//            final Point p2 = myLines.get(i + 1);
+//            g2.drawLine(p1.x, p1.y, p2.x, p2.y);
+//        }
+//        
+//        //if (myPoint2 != NO_POINT) { // could do this, OR do as shown below
+//        if (!Objects.equals(myEndPoint, NO_POINT)) { // using a feature of Java 7
+//            g2.drawLine(myStartPoint.x, myStartPoint.y, myEndPoint.x, myEndPoint.y);
+//        }
+//    }
+//}
+
+

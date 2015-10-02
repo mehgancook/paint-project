@@ -1,0 +1,31 @@
+/*
+ * Assignment 5
+ * Winter15
+ * TCSS305
+ */
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
+
+/**
+ * The Rectangle Tool used to draw rectangles.
+ * @author Mehgan Cook
+ * @version 02/23/2015
+ */
+public class RectangleTool implements Tool {
+    /** 
+     * creates a rectangle2D shape and returns it with start and stop positions.
+     * @param theStartPoint is the starting point.
+     * @param theEndPoint is the ending point.
+     * @return a rectangle shape.
+     * */
+    public Shape getShape(final Point theStartPoint, final Point theEndPoint) {
+        final Rectangle2D rectangle = new Rectangle2D.Double();
+        rectangle.setFrameFromDiagonal(theStartPoint.x, theStartPoint.y, 
+                                       theEndPoint.x, theEndPoint.y);
+        return rectangle;
+    }
+
+}
+
+

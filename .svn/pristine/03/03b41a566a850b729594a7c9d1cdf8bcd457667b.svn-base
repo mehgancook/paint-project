@@ -1,0 +1,54 @@
+
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+/*
+ * Assignment 5
+ * Winter15
+ * TCSS305
+ */
+
+/**
+ * @author mehga_000
+ *
+ */
+@SuppressWarnings("serial")
+public class LineAction extends AbstractAction {
+    /** The JPanel to associate with this Action. */
+    private final DrawingPanel myPanel;
+
+    /**
+     * Construct this Action.
+     * 
+     * @param thePanel a JPanel to associate with this Action.
+     */
+    public LineAction(final DrawingPanel thePanel) {
+        super("Line");
+        myPanel = thePanel;
+        putValue(Action.MNEMONIC_KEY, KeyEvent.VK_L);
+        putValue(Action.SELECTED_KEY, true);
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    public void actionPerformed(final ActionEvent theEvent) {
+     //   myPanel.drawLines();
+    }
+
+}
+
+
+
+
+
+
+
+   
+
+
+
+
