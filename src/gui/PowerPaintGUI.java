@@ -1,9 +1,5 @@
 package gui;
-/*
- * Assignment 5
- * Winter15
- * TCSS305
- */
+
 import actions.EllipseAction;
 import actions.LineAction;
 import actions.PencilAction;
