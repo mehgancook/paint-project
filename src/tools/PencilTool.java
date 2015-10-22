@@ -1,10 +1,5 @@
 package tools;
 
-/*
- * Assignment 5
- * Winter15
- * TCSS305
- */
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Path2D;
