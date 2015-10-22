@@ -1,9 +1,4 @@
 package actions;
-/*
- * Assignment 5
- * Winter15
- * TCSS305
- */
 
 import gui.DrawingPanel;
 
